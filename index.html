@@ -1,113 +1,174 @@
 <!DOCTYPE html>
 <html lang="th">
+
     <head>
         <meta charset="UTF-8">
-        <meta name="viewport"
-            content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-        <title>MoneyFlow Pro</title>
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>IMS - Complete System</title>
+        <link rel="icon"
+            href="assets/Gemini_Generated_Image_bf9e37bf9e37bf9e.png"
+            type="image/png">
         <script src="https://cdn.tailwindcss.com"></script>
         <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
         <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-        <link rel="stylesheet"
-            href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css" />
-        <link rel="stylesheet"
-            href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
         <script
-            src="https://www.gstatic.com/firebasejs/8.10.1/firebase-app.js"></script>
+            src="https://www.gstatic.com/firebasejs/9.22.1/firebase-app-compat.js"></script>
         <script
-            src="https://www.gstatic.com/firebasejs/8.10.1/firebase-database.js"></script>
-        <link rel="stylesheet" href="style.css">
+            src="https://www.gstatic.com/firebasejs/9.22.1/firebase-database-compat.js"></script>
+        <link
+            href="https://fonts.googleapis.com/css2?family=Kanit:wght@300;400;500;600&display=swap"
+            rel="stylesheet">
+        <link rel="stylesheet" href="css/style.css">
     </head>
-    <body class="bg-slate-100 dark:bg-zinc-950 transition-colors duration-500">
 
-        <div class="app-container shadow-2xl animate__animated animate__fadeIn">
+    <body>
+        <button onclick="toggleTheme()" id="themeBtn"
+            class="theme-switch shadow-lg">🌙</button>
 
-            <header class="p-8 pt-12 flex justify-between items-start">
-                <div class="animate__animated animate__slideInLeft">
-                    <p
-                        class="text-[10px] font-bold opacity-40 uppercase tracking-widest mb-1 dark:text-white">ยอดเงินคงเหลือ</p>
-                    <h1 id="mainBalance"
-                        class="text-5xl font-black tracking-tighter dark:text-white">0.00</h1>
-                </div>
-                <button onclick="toggleDarkMode()"
-                    class="w-12 h-12 rounded-2xl bg-white dark:bg-zinc-900 shadow-sm flex items-center justify-center transition-transform active:scale-90">
-                    <i id="darkIcon"
-                        class="fa-solid fa-moon text-slate-600 dark:text-yellow-400 text-xl"></i>
-                </button>
-            </header>
-
-            <main class="px-6">
-                <section id="page-add"
-                    class="page active animate__animated animate__fadeInUp">
-                    <div class="space-y-6">
-                        <div
-                            class="flex bg-slate-200/50 dark:bg-zinc-900/50 p-1.5 rounded-2xl backdrop-blur-md">
-                            <button onclick="setType('expense')" id="btnExp"
-                                class="flex-1 py-4 rounded-xl font-bold text-sm transition-all duration-300">รายจ่าย</button>
-                            <button onclick="setType('income')" id="btnInc"
-                                class="flex-1 py-4 rounded-xl font-bold text-sm transition-all duration-300">รายรับ</button>
-                        </div>
-                        <div class="space-y-4">
-                            <input type="hidden" id="editId">
-                            <select id="categorySelect"
-                                class="input-clean font-bold focus:ring-2 ring-indigo-500 transition-all dark:bg-zinc-900 dark:border-zinc-800 dark:text-white"></select>
-                            <input id="amountInput" type="number"
-                                placeholder="0.00"
-                                class="input-clean text-4xl font-black focus:scale-[1.02] transition-transform dark:bg-zinc-900 dark:border-zinc-800 dark:text-white">
-                            <input id="noteInput" type="text"
-                                placeholder="บันทึก..."
-                                class="input-clean text-sm opacity-60 dark:bg-zinc-900 dark:border-zinc-800 dark:text-white">
-                            <button id="saveBtn" onclick="saveTransaction()"
-                                class="w-full bg-indigo-600 text-white py-5 rounded-[2rem] font-bold shadow-lg shadow-indigo-300/50 active:scale-95 transition-all">บันทึกข้อมูล</button>
+        <div class="max-w-md mx-auto p-5">
+            <div id="page-sell" class="page active">
+                <h1
+                    class="text-2xl font-extrabold mb-6 text-center">บันทึกการขาย
+                    🛍️</h1>
+                <div class="card p-6 space-y-6">
+                    <div>
+                        <label
+                            class="block text-xs font-bold opacity-50 mb-2">เลือกสินค้า</label>
+                        <select id="selectMenu" onchange="updatePreview()"
+                            class="w-full p-4 rounded-2xl outline-none text-lg font-medium shadow-inner transition-all"></select>
+                    </div>
+                    <div id="previewArea"
+                        class="hidden p-4 rounded-2xl border flex justify-between items-center bg-blue-50 dark:bg-blue-900/20 text-slate-900 dark:text-white">
+                        <span class="text-xs opacity-70">ทุน: <b
+                                id="preCost">0</b></span>
+                        <span class="font-bold text-xl">ขาย: <b
+                                id="prePrice">0</b></span>
+                    </div>
+                    <div class="text-center">
+                        <label
+                            class="block text-xs font-bold opacity-50 mb-2">จำนวน</label>
+                        <div class="flex items-center justify-center gap-4">
+                            <button onclick="adjQty(-1)"
+                                class="adj-btn w-12 h-12 rounded-full flex items-center justify-center text-2xl font-bold">-</button>
+                            <input type="number" id="sellQty" value="1"
+                                inputmode="numeric"
+                                class="w-20 bg-transparent text-center text-4xl font-black outline-none">
+                            <button onclick="adjQty(1)"
+                                class="adj-btn w-12 h-12 rounded-full flex items-center justify-center text-2xl font-bold">+</button>
                         </div>
                     </div>
-                </section>
+                    <button onclick="recordSale()"
+                        class="w-full bg-blue-600 text-white py-5 rounded-[2rem] font-bold text-xl shadow-lg active:scale-95 transition-all">บันทึกยอดขาย
+                        🚀</button>
+                </div>
+            </div>
 
-                <section id="page-daily" class="page space-y-4">
-                    <div class="glass-card animate__animated animate__zoomIn">
-                        <p
-                            class="text-[10px] font-black opacity-30 mb-4 text-center uppercase dark:text-white">สัดส่วนตามหมวดหมู่</p>
-                        <canvas id="dailyChart"
+            <div id="page-expense" class="page">
+                <h1
+                    class="text-2xl font-extrabold mb-6 text-center">รายรับ-รายจ่าย
+                    📓</h1>
+                <div class="card p-6 space-y-4">
+                    <div
+                        class="flex p-1 bg-slate-100 dark:bg-slate-800 rounded-2xl">
+                        <button id="btnIncome" onclick="setExpType('income')"
+                            class="flex-1 py-3 rounded-xl bg-white dark:bg-slate-700 text-emerald-600 shadow-sm font-bold">รายรับ
+                            (+)</button>
+                        <button id="btnExpense" onclick="setExpType('expense')"
+                            class="flex-1 py-3 rounded-xl text-slate-400 font-bold">รายจ่าย
+                            (-)</button>
+                    </div>
+                    <input type="text" id="expName" placeholder="รายการ..."
+                        class="w-full p-4 rounded-2xl outline-none border">
+                    <input type="number" id="expAmount" placeholder="0.00"
+                        inputmode="decimal"
+                        class="w-full p-4 rounded-2xl text-3xl font-black text-center outline-none border">
+                    <button onclick="saveExpense()"
+                        class="w-full bg-emerald-600 text-white py-4 rounded-2xl font-bold text-lg shadow-md">ลงบันทึก
+                        ✍️</button>
+                </div>
+            </div>
+
+            <div id="page-menu-setup" class="page">
+                <h1 class="text-2xl font-extrabold mb-6 text-center">คลังสินค้า
+                    📋</h1>
+                <div
+                    class="card p-5 space-y-3 mb-6 border-2 border-dashed border-slate-200">
+                    <input type="text" id="newMenuName" placeholder="ชื่อสินค้า"
+                        class="w-full p-3 rounded-xl outline-none border">
+                    <div class="grid grid-cols-2 gap-3">
+                        <input type="number" id="newMenuCost"
+                            placeholder="ต้นทุน"
+                            class="w-full p-3 rounded-xl outline-none border">
+                        <input type="number" id="newMenuPrice"
+                            placeholder="ราคาขาย"
+                            class="w-full p-3 rounded-xl outline-none border">
+                    </div>
+                    <button onclick="saveMenuItem()"
+                        class="w-full bg-slate-800 text-white p-3 rounded-xl font-bold">เพิ่มสินค้า</button>
+                </div>
+                <div id="masterMenuList" class="space-y-3"></div>
+            </div>
+
+            <div id="page-report" class="page">
+                <h1 class="text-2xl font-extrabold mb-6 text-center">สรุปบัญชี
+                    📊</h1>
+                <div
+                    class="card p-8 text-center mb-6 profit-gradient text-white border-none shadow-xl">
+                    <p
+                        class="text-[10px] opacity-70 uppercase font-bold mb-1">กำไรสุทธิ</p>
+                    <p id="netProfit"
+                        class="text-5xl font-black text-emerald-400">0</p>
+                </div>
+                <div class="card p-4 mb-6"><canvas
+                        id="saleChart"></canvas></div>
+                <div class="card p-4 mb-6 shadow-sm">
+                    <h3 class="text-sm font-bold mb-4 opacity-70">📊
+                        สัดส่วนรายรับ-รายจ่าย (รวมทุน/กำไร)</h3>
+                    <div class="flex justify-center">
+                        <canvas id="pieChart"
                             style="max-height: 250px;"></canvas>
                     </div>
-                    <div id="dailyList" class="space-y-2"></div>
-                </section>
+                </div>
+                <div class="card p-4 mb-4">
+                    <h3 class="text-sm font-bold mb-3 italic opacity-70">🛍️
+                        ประวัติการขาย</h3>
+                    <table class="w-full text-xs">
+                        <tbody id="webSaleTable"></tbody>
+                    </table>
+                </div>
 
-                <section id="page-stats" class="page space-y-4">
-                    <div
-                        class="flex justify-between items-center px-2 animate__animated animate__fadeIn">
-                        <h2
-                            class="text-xs font-black opacity-30 uppercase dark:text-white">วิเคราะห์</h2>
-                        <input type="month" id="monthPicker"
-                            onchange="renderStats()"
-                            class="bg-transparent text-[10px] font-bold text-indigo-500 border-none outline-none">
-                    </div>
-                    <div id="statsSummary" class="grid grid-cols-2 gap-3"></div>
-                    <div class="glass-card animate__animated animate__fadeInUp">
-                        <canvas id="statsChart"
-                            style="max-height: 200px;"></canvas>
-                    </div>
-                    <div id="statsList" class="space-y-2"></div>
-                </section>
-            </main>
+                <div class="card p-4 mb-6">
+                    <h3 class="text-sm font-bold mb-3 italic opacity-70">📓
+                        รายรับ-รายจ่าย</h3>
+                    <table class="w-full text-xs">
+                        <tbody id="webExpenseTable"></tbody>
+                    </table>
+                </div>
 
-            <nav class="fixed-nav animate__animated animate__slideInUp">
-                <button onclick="showPage('page-add', this)"
-                    class="nav-btn nav-active">
-                    <i class="fa-solid fa-house-chimney"></i><span>HOME</span>
-                </button>
-                <button onclick="showPage('page-stats', this)" class="nav-btn">
-                    <i class="fa-solid fa-chart-pie"></i><span>INTEREST</span>
-                </button>
-                <button onclick="showPage('page-daily', this)" class="nav-btn">
-                    <i class="fa-solid fa-list-ul"></i><span>LOG</span>
-                </button>
-                <!-- <button class="nav-btn opacity-40">
-                    <i class="fa-solid fa-gear"></i><span>SET</span>
-                </button> -->
-            </nav>
+                <button onclick="exportRichExcel()"
+                    class="w-full bg-emerald-600 text-white py-5 rounded-[2rem] font-black shadow-lg">📥
+                    ดาวน์โหลด
+                    Excel</button>
+                <button onclick="secureClearData()"
+                    class="w-full text-slate-400 text-[10px] mt-6 py-4">ล้างประวัติบันทึกทั้งหมด</button>
+            </div>
         </div>
 
-        <script src="app.js"></script>
+        <nav
+            class="fixed bottom-0 left-0 right-0 p-4 flex justify-around max-w-md mx-auto z-50 rounded-t-[2.5rem] bg-white dark:bg-slate-900 shadow-2xl border-t dark:border-slate-800">
+            <button onclick="showPage('page-sell')" class="nav-btn">💰<p
+                    class="text-[10px]">ขาย</p></button>
+            <button onclick="showPage('page-expense')" class="nav-btn">📓<p
+                    class="text-[10px]">จด</p></button>
+            <button onclick="showPage('page-menu-setup')" class="nav-btn">📋<p
+                    class="text-[10px]">คลัง</p></button>
+            <button onclick="showPage('page-report')" class="nav-btn">📊<p
+                    class="text-[10px]">สรุป</p></button>
+        </nav>
+
+        <script src="js/config.js"></script>
+        <script src="js/report.js"></script>
+        <script src="js/app.js"></script>
     </body>
+
 </html>
