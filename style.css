@@ -1,0 +1,112 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;700;900&family=Anuphan:wght@400;700&display=swap');
+
+:root {
+    --bg: #ffffff;
+    --text: #0f172a;
+    --card: #f8fafc;
+    --border: #f1f5f9;
+}
+
+body.dark {
+    --bg: #000000;
+    --text: #f8fafc;
+    --card: #111111;
+    --border: #1a1a1a;
+}
+
+body {
+    background-color: var(--bg);
+    color: var(--text);
+    font-family: 'Anuphan', sans-serif;
+    transition: 0.3s;
+}
+
+.font-inter {
+    font-family: 'Inter', sans-serif;
+}
+
+.page {
+    display: none;
+}
+
+.page.active {
+    display: block;
+    animation: fadeIn 0.3s ease;
+}
+
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+    }
+
+    to {
+        opacity: 1;
+    }
+}
+
+.glass-card {
+    background-color: var(--card);
+    border-radius: 30px;
+    border: 1px solid var(--border);
+    padding: 20px;
+}
+
+.input-clean {
+    width: 100%;
+    padding: 18px;
+    border-radius: 20px;
+    background: var(--card);
+    border: 1px solid var(--border);
+    color: inherit;
+    outline: none;
+}
+
+.nav-btn {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 4px;
+    color: #64748b;
+    background: none;
+    border: none;
+    transition: 0.3s;
+    width: 70px;
+    cursor: pointer;
+}
+
+.nav-btn i {
+    font-size: 18px;
+}
+
+.nav-btn span {
+    font-size: 9px;
+    font-weight: 800;
+}
+
+.nav-active {
+    color: #ffffff !important;
+    background: rgba(255, 255, 255, 0.1);
+    border-radius: 20px;
+    padding: 10px 0;
+    border: 1px solid #f59e0b;
+}
+
+.stat-box {
+    background: var(--card);
+    border: 1px solid var(--border);
+    padding: 15px;
+    border-radius: 24px;
+    text-align: center;
+}
+
+.stat-label {
+    font-size: 10px;
+    font-weight: bold;
+    opacity: 0.4;
+}
+
+.stat-value {
+    font-family: 'Inter';
+    font-weight: 900;
+    font-size: 18px;
+}
