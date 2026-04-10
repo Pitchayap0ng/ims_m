@@ -1,28 +1,33 @@
-@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;700;900&family=Anuphan:wght@400;700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Anuphan:wght@400;700&display=swap');
 
 :root {
     --bg: #ffffff;
-    --text: #0f172a;
     --card: #f8fafc;
     --border: #f1f5f9;
 }
 
 body.dark {
-    --bg: #000000;
-    --text: #f8fafc;
-    --card: #111111;
-    --border: #1a1a1a;
+    --bg: #09090b;
+    --card: #18181b;
+    --border: #27272a;
 }
 
 body {
-    background-color: var(--bg);
-    color: var(--text);
     font-family: 'Anuphan', sans-serif;
-    transition: 0.3s;
+    overflow-x: hidden;
 }
 
-.font-inter {
-    font-family: 'Inter', sans-serif;
+/* จัดกึ่งกลางสำหรับคอมพิวเตอร์ */
+.app-container {
+    width: 100%;
+    max-width: 450px;
+    /* ขนาดหน้าจอมือถือมาตรฐาน */
+    margin: 0 auto;
+    background-color: var(--bg);
+    min-height: 100vh;
+    position: relative;
+    padding-bottom: 120px;
+    transition: background-color 0.5s ease;
 }
 
 .page {
@@ -31,47 +36,51 @@ body {
 
 .page.active {
     display: block;
-    animation: fadeIn 0.3s ease;
-}
-
-@keyframes fadeIn {
-    from {
-        opacity: 0;
-    }
-
-    to {
-        opacity: 1;
-    }
 }
 
 .glass-card {
-    background-color: var(--card);
-    border-radius: 30px;
+    background: var(--card);
     border: 1px solid var(--border);
-    padding: 20px;
+    border-radius: 2.5rem;
+    padding: 25px;
 }
 
 .input-clean {
     width: 100%;
-    padding: 18px;
-    border-radius: 20px;
+    padding: 20px;
+    border-radius: 1.5rem;
     background: var(--card);
     border: 1px solid var(--border);
-    color: inherit;
     outline: none;
 }
 
+/* Navigation Bar สไตล์ Dark Rounded */
+.fixed-nav {
+    position: fixed;
+    bottom: 30px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 90%;
+    max-width: 400px;
+    background: #18181b;
+    border-radius: 40px;
+    padding: 10px;
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+    box-shadow: 0 20px 40px rgba(0, 0, 0, 0.4);
+    z-index: 100;
+}
+
 .nav-btn {
+    color: #52525b;
     display: flex;
     flex-direction: column;
     align-items: center;
     gap: 4px;
-    color: #64748b;
-    background: none;
-    border: none;
-    transition: 0.3s;
-    width: 70px;
-    cursor: pointer;
+    padding: 12px 20px;
+    transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    border-radius: 25px;
 }
 
 .nav-btn i {
@@ -80,33 +89,21 @@ body {
 
 .nav-btn span {
     font-size: 9px;
-    font-weight: 800;
+    font-weight: 900;
 }
 
+/* อนิเมชันปุ่มที่เลือก */
 .nav-active {
     color: #ffffff !important;
-    background: rgba(255, 255, 255, 0.1);
-    border-radius: 20px;
-    padding: 10px 0;
+    background: #27272a;
     border: 1px solid #f59e0b;
+    transform: translateY(-5px);
 }
 
 .stat-box {
     background: var(--card);
-    border: 1px solid var(--border);
+    border-radius: 1.5rem;
     padding: 15px;
-    border-radius: 24px;
     text-align: center;
-}
-
-.stat-label {
-    font-size: 10px;
-    font-weight: bold;
-    opacity: 0.4;
-}
-
-.stat-value {
-    font-family: 'Inter';
-    font-weight: 900;
-    font-size: 18px;
+    border: 1px solid var(--border);
 }
