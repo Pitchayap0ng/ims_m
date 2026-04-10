@@ -1,33 +1,49 @@
-@import url('https://fonts.googleapis.com/css2?family=Anuphan:wght@400;700&display=swap');
-
 :root {
-    --bg: #ffffff;
-    --card: #f8fafc;
-    --border: #f1f5f9;
+    --bg-main: #f8fafc;
+    --bg-card: #ffffff;
+    --text-main: #1e293b;
+    --border-color: #e2e8f0;
+    --input-bg: #ffffff;
 }
 
-body.dark {
-    --bg: #09090b;
-    --card: #18181b;
-    --border: #27272a;
+[data-theme='dark'] {
+    --bg-main: #0f172a;
+    --bg-card: #1e293b;
+    --text-main: #f1f5f9;
+    --border-color: #334155;
+    --input-bg: #1e293b;
 }
 
 body {
-    font-family: 'Anuphan', sans-serif;
-    overflow-x: hidden;
+    font-family: 'Kanit', sans-serif;
+    background-color: var(--bg-main);
+    color: var(--text-main);
+    padding-bottom: 100px;
+    transition: background 0.3s, color 0.3s;
 }
 
-/* จัดกึ่งกลางสำหรับคอมพิวเตอร์ */
-.app-container {
-    width: 100%;
-    max-width: 450px;
-    /* ขนาดหน้าจอมือถือมาตรฐาน */
-    margin: 0 auto;
-    background-color: var(--bg);
-    min-height: 100vh;
-    position: relative;
-    padding-bottom: 120px;
-    transition: background-color 0.5s ease;
+.card {
+    background: var(--bg-card);
+    border-radius: 2rem;
+    border: 1px solid var(--border-color);
+}
+
+.profit-gradient {
+    background: linear-gradient(135deg, #1e293b 0%, #334155 100%);
+}
+
+/* แก้บั๊กปุ่มบวก-ลบขาวโบ๋ */
+.adj-btn {
+    background-color: var(--border-color) !important;
+    color: var(--text-main) !important;
+}
+
+/* แก้บั๊ก Dropdown และ Input ตัวหนังสือหาย */
+select,
+input {
+    background-color: var(--input-bg) !important;
+    color: var(--text-main) !important;
+    border: 1px solid var(--border-color) !important;
 }
 
 .page {
@@ -36,74 +52,47 @@ body {
 
 .page.active {
     display: block;
+    animation: fadeIn 0.4s ease-out;
 }
 
-.glass-card {
-    background: var(--card);
-    border: 1px solid var(--border);
-    border-radius: 2.5rem;
-    padding: 25px;
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(10px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
 }
 
-.input-clean {
-    width: 100%;
-    padding: 20px;
-    border-radius: 1.5rem;
-    background: var(--card);
-    border: 1px solid var(--border);
-    outline: none;
-}
-
-/* Navigation Bar สไตล์ Dark Rounded */
-.fixed-nav {
+.theme-switch {
     position: fixed;
-    bottom: 30px;
-    left: 50%;
-    transform: translateX(-50%);
-    width: 90%;
-    max-width: 400px;
-    background: #18181b;
-    border-radius: 40px;
-    padding: 10px;
-    display: flex;
-    justify-content: space-around;
-    align-items: center;
-    box-shadow: 0 20px 40px rgba(0, 0, 0, 0.4);
+    top: 20px;
+    right: 20px;
     z-index: 100;
+    width: 45px;
+    height: 45px;
+    border-radius: 15px;
+    background: var(--bg-card);
+    color: var(--text-main);
+    border: 1px solid var(--border-color);
+}
+
+nav {
+    background-color: var(--bg-card) !important;
+    border-top: 1px solid var(--border-color) !important;
 }
 
 .nav-btn {
-    color: #52525b;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    gap: 4px;
-    padding: 12px 20px;
-    transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-    border-radius: 25px;
+    opacity: 0.4;
+    transition: 0.3s;
+    color: var(--text-main);
 }
 
-.nav-btn i {
-    font-size: 18px;
-}
-
-.nav-btn span {
-    font-size: 9px;
-    font-weight: 900;
-}
-
-/* อนิเมชันปุ่มที่เลือก */
-.nav-active {
-    color: #ffffff !important;
-    background: #27272a;
-    border: 1px solid #f59e0b;
-    transform: translateY(-5px);
-}
-
-.stat-box {
-    background: var(--card);
-    border-radius: 1.5rem;
-    padding: 15px;
-    text-align: center;
-    border: 1px solid var(--border);
+.nav-btn.active-nav {
+    opacity: 1;
+    color: #3b82f6;
+    transform: scale(1.1);
 }
